@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Psychology Mid-Term – Phase 1 Quiz</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--ink:#16181d;--mute:#5b6270;--line:#d9dce3;--acc:#2f5bea;--accink:#fff;--sel:#e8eefe;--bad:#c62828;--good:#1b7f3b}
+@media (prefers-color-scheme:dark){:root{--bg:#12141a;--card:#1b1e27;--ink:#eceef3;--mute:#9aa1b0;--line:#2e3341;--acc:#6f93ff;--accink:#0d1020;--sel:#232b47;--bad:#ff7b7b;--good:#5fd68a}}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+input{user-select:text;-webkit-user-select:text}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+h1{font-size:1.4rem;margin:0 0 6px}
+h2{font-size:1.15rem;margin:0 0 12px;line-height:1.4}
+p{margin:0 0 12px}
+.mute{color:var(--mute);font-size:.92rem}
+.rules{margin:14px 0 18px;padding:0 0 0 20px}
+.rules li{margin-bottom:6px}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text]{width:100%;padding:11px 12px;font-size:1rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:11px 18px}
+button.primary{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.92rem;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:16px}
+.bar>i{display:block;height:100%;background:var(--acc);width:0}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;margin:0 0 10px;padding:13px 14px;border-radius:12px;background:var(--card)}
+.opt b{min-width:1.4em;color:var(--mute)}
+.opt.sel{border-color:var(--acc);background:var(--sel)}
+.row{display:flex;justify-content:flex-end;margin-top:14px}
+.big{font-size:2.6rem;font-weight:700;margin:6px 0}
+.bad{color:var(--bad)}.good{color:var(--good)}
+pre{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font:.92rem/1.5 ui-monospace,Menlo,Consolas,monospace;user-select:text;-webkit-user-select:text}
+.hide{display:none}
+.adm{margin-top:18px;text-align:center}
+.adm button.lnk{border:0;background:none;color:var(--mute);font-size:.85rem;text-decoration:underline;padding:6px}
+.adm .box{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.adm input{max-width:200px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="s-start" class="card hide">
+  <h1>Introduction to Psychology – Mid-Term</h1>
+  <p class="mute">Model MCQs · Quiz Phase 1 (60 MCQs)</p>
+  <ul class="rules">
+    <li>60 MCQs in random order. Only one attempt is allowed. / کوئز صرف ایک بار ہو گا۔</li>
+    <li>The quiz opens in full screen. Leaving it, switching tab or app, minimizing, refreshing or going back <b>ends the quiz immediately</b>. / اسکرین سے باہر نکلے تو کوئز ختم۔</li>
+    <li>You cannot go back to a previous question once you press Next.</li>
+    <li>No correct answers are shown during the quiz.</li>
+  </ul>
+  <label for="nm">Full name</label>
+  <input id="nm" type="text" autocomplete="off" maxlength="60">
+  <label for="rl">Roll no.</label>
+  <input id="rl" type="text" autocomplete="off" maxlength="30">
+  <p id="err" class="bad mute" style="margin-top:10px"></p>
+  <button id="go" class="primary">Start Quiz</button>
+</section>
+
+<section id="s-quiz" class="hide">
+  <div class="top"><span id="qn"></span><span id="clock">00:00</span></div>
+  <div class="bar"><i id="pb"></i></div>
+  <div class="card">
+    <h2 id="qt"></h2>
+    <div id="opts"></div>
+    <div class="row"><button id="next" class="primary" disabled>Next</button></div>
+  </div>
+</section>
+
+<section id="s-end" class="card hide">
+  <h1 id="et"></h1>
+  <p id="em" class="mute"></p>
+  <div class="big" id="sc"></div>
+  <p class="mute">Copy the report below and send it to your quiz head. The review of your wrong answers is only for you and is not part of the report.</p>
+  <pre id="rp"></pre>
+  <button id="cp" class="primary">Copy report</button>
+  <h2 style="margin-top:22px">Review</h2>
+  <pre id="rv"></pre>
+</section>
+
+<div id="adm" class="adm hide">
+  <button id="admt" class="lnk">Admin reset</button>
+  <div id="admb" class="box hide">
+    <input id="admc" type="password" placeholder="Admin code" autocomplete="off">
+    <button id="admg" class="primary">Reset</button>
+  </div>
+  <p id="adme" class="bad mute"></p>
+</div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+{
+"n": "S1-Q1",
+"q": "In which year was the first psychological laboratory founded?",
+"opts": [
+"1869",
+"1879",
+"1889",
+"1899"
+],
+"ans": 1
+},
+{
+"n": "S1-Q2",
+"q": "Who established the first formal laboratory for psychology?",
+"opts": [
+"Sigmund Freud",
+"B. F. Skinner",
+"Wilhelm Wundt",
+"William James"
+],
+"ans": 2
+},
+{
+"n": "S1-Q3",
+"q": "Wilhelm Wundt was fundamentally a philosopher and what?",
+"opts": [
+"Sociologist",
+"Biologist",
+"Physiologist",
+"Physicist"
+],
+"ans": 2
+},
+{
+"n": "S1-Q4",
+"q": "Modern psychology is officially defined as the scientific study of:",
+"opts": [
+"Behavior and mental processes",
+"Human soul and mind",
+"Conscious reflection only",
+"Brain anatomy exclusively"
+],
+"ans": 0
+},
+{
+"n": "S1-Q5",
+"q": "Human behavior that is directly visible and measurable is termed:",
+"opts": [
+"Covert",
+"Overt",
+"Latent",
+"Subconscious"
+],
+"ans": 1
+},
+{
+"n": "S1-Q6",
+"q": "Underlying and hidden internal mental processes are classified as:",
+"opts": [
+"Overt",
+"Manifest",
+"Covert",
+"Direct"
+],
+"ans": 2
+},
+{
+"n": "S1-Q7",
+"q": "Which method promotes better long-term memory retention?",
+"opts": [
+"Massed practice",
+"Cramming",
+"Spaced practice",
+"Information overload"
+],
+"ans": 2
+},
+{
+"n": "S1-Q8",
+"q": "Who stated 'no reception without reaction, and no impression without expression'?",
+"opts": [
+"Wilhelm Wundt",
+"William James",
+"John Watson",
+"Edward Titchener"
+],
+"ans": 1
+},
+{
+"n": "S1-Q9",
+"q": "What study strategy involves reviewing material past initial mastery?",
+"opts": [
+"Overlearning",
+"Selective attention",
+"Rote recitation",
+"Chunking"
+],
+"ans": 0
+},
+{
+"n": "S1-Q10",
+"q": "Which professional possesses a medical degree to prescribe medications?",
+"opts": [
+"Clinical psychologist",
+"Cognitive psychologist",
+"Psychiatrist",
+"Forensic psychologist"
+],
+"ans": 2
+},
+{
+"n": "S1-Q11",
+"q": "What can psychologists professionally predict regarding a person's life?",
+"opts": [
+"Absolute destiny",
+"Ultimate fate",
+"Behavioral direction",
+"Future luck"
+],
+"ans": 2
+},
+{
+"n": "S1-Q12",
+"q": "A common misconception states that trained psychologists can:",
+"opts": [
+"Measure reaction time",
+"Read minds like magicians",
+"Collect research data",
+"Formulate hypotheses"
+],
+"ans": 1
+},
+{
+"n": "S1-Q13",
+"q": "Why are animals occasionally studied in psychological research?",
+"opts": [
+"They lack instincts",
+"Human ethical constraints",
+"Lower training costs",
+"They have covert behavior"
+],
+"ans": 1
+},
+{
+"n": "S1-Q14",
+"q": "How does scientific psychology officially view supernatural phenomena?",
+"opts": [
+"Validates them fully",
+"Does not deal with them",
+"Focuses mainly on demons",
+"Classifies them as overt"
+],
+"ans": 1
+},
+{
+"n": "S1-Q15",
+"q": "What is the systematic series of steps used in research called?",
+"opts": [
+"Trial and error",
+"Scientific method",
+"Philosophical deduction",
+"Anecdotal reasoning"
+],
+"ans": 1
+},
+{
+"n": "S1-Q16",
+"q": "Which of the following is an explicit primary goal of psychology?",
+"opts": [
+"Moral assessment",
+"Prediction and control",
+"Spiritual guidance",
+"Medical diagnosis"
+],
+"ans": 1
+},
+{
+"n": "S1-Q17",
+"q": "Which branch represents the oldest and most widely recognized specialty?",
+"opts": [
+"Sports psychology",
+"Clinical psychology",
+"Environmental psychology",
+"Health psychology"
+],
+"ans": 1
+},
+{
+"n": "S1-Q18",
+"q": "Workplace productivity, leadership, and job satisfaction are studied in:",
+"opts": [
+"Industrial/Organizational psychology",
+"Forensic psychology",
+"Social psychology",
+"Cognitive psychology"
+],
+"ans": 0
+},
+{
+"n": "S1-Q19",
+"q": "The link between psychological stress and physical disease is explored by:",
+"opts": [
+"Health psychology",
+"Forensic psychology",
+"Clinical psychology",
+"Sports psychology"
+],
+"ans": 0
+},
+{
+"n": "S1-Q20",
+"q": "Buying tendencies, preference formation, and ad impacts are evaluated by:",
+"opts": [
+"Social psychology",
+"Consumer psychology",
+"Applied ergonomics",
+"Behavioral sociology"
+],
+"ans": 1
+},
+{
+"n": "S1-Q21",
+"q": "The interaction between human behavior and the physical environment is handled by:",
+"opts": [
+"Clinical psychology",
+"Ecological biology",
+"Environmental psychology",
+"Health psychology"
+],
+"ans": 2
+},
+{
+"n": "S1-Q22",
+"q": "Enhancing team morale, focus, and handling athletic pressure fall under:",
+"opts": [
+"Sports psychology",
+"Positive psychology",
+"Health psychology",
+"Forensic psychology"
+],
+"ans": 0
+},
+{
+"n": "S1-Q23",
+"q": "Legal determinations of insanity and criminal intent are addressed by:",
+"opts": [
+"Educational psychology",
+"Forensic psychology",
+"Comparative psychology",
+"Clinical psychology"
+],
+"ans": 1
+},
+{
+"n": "S1-Q24",
+"q": "Critical thinking strictly involves evaluating whether evidence is:",
+"opts": [
+"Rigid and unchangeable",
+"Subjective only",
+"Based on facts and experiments",
+"Entirely personal"
+],
+"ans": 2
+},
+{
+"n": "S1-Q25",
+"q": "The core steps of the scientific method include observation, control, and:",
+"opts": [
+"Speculation",
+"Intuition",
+"Replication",
+"Mysticism"
+],
+"ans": 2
+},
+{
+"n": "S1-Q26",
+"q": "Wilhelm Wundt established his landmark psychological laboratory in:",
+"opts": [
+"Germany",
+"United States",
+"Austria",
+"England"
+],
+"ans": 0
+},
+{
+"n": "S1-Q27",
+"q": "The scientific attitude begins with an open mind combined with:",
+"opts": [
+"Skeptical inquiry",
+"Blind acceptance",
+"Complete certainty",
+"Absolute dogma"
+],
+"ans": 0
+},
+{
+"n": "S1-Q28",
+"q": "Professional psychological intervention aims primarily to:",
+"opts": [
+"Foretell fortunes",
+"Resolve behavioral issues",
+"Administer surgery",
+"Prescribe sedatives"
+],
+"ans": 1
+},
+{
+"n": "S1-Q29",
+"q": "Deciding jury size fairness and juror decision-making is evaluated in:",
+"opts": [
+"Forensic psychology",
+"Industrial psychology",
+"Consumer psychology",
+"Educational psychology"
+],
+"ans": 0
+},
+{
+"n": "S1-Q30",
+"q": "Massed practice is commonly referred to in everyday learning as:",
+"opts": [
+"Overlearning",
+"Information overload/cramming",
+"Spaced study",
+"Active expression"
+],
+"ans": 1
+},
+{
+"n": "S2-Q1",
+"q": "Which school of thought focuses on breaking down mental processes into basic elements?",
+"opts": [
+"Functionalism",
+"Behaviorism",
+"Structuralism",
+"Gestalt"
+],
+"ans": 2
+},
+{
+"n": "S2-Q2",
+"q": "Who were the primary founders of Structuralism?",
+"opts": [
+"William James & John Dewey",
+"Wilhelm Wundt & Edward Titchener",
+"Carl Rogers & Abraham Maslow",
+"Max Wertheimer & Kurt Koffka"
+],
+"ans": 1
+},
+{
+"n": "S2-Q3",
+"q": "The primary research method used by structuralists was:",
+"opts": [
+"Dream analysis",
+"Operant conditioning",
+"Introspection",
+"Brain imaging"
+],
+"ans": 2
+},
+{
+"n": "S2-Q4",
+"q": "Which major criticism was leveled against Structuralism?",
+"opts": [
+"Too subjective and unscientific",
+"Ignored observable actions",
+"Overemphasized sexual drives",
+"Too idealistic in nature"
+],
+"ans": 0
+},
+{
+"n": "S2-Q5",
+"q": "Functionalism primarily examines how consciousness helps individuals to:",
+"opts": [
+"Repress trauma",
+"Adapt to environment",
+"Form reflex arcs",
+"Attain self-actualization"
+],
+"ans": 1
+},
+{
+"n": "S2-Q6",
+"q": "Who is recognized as a key founder of Functionalism?",
+"opts": [
+"Sigmund Freud",
+"William James",
+"B. F. Skinner",
+"Roger Sperry"
+],
+"ans": 1
+},
+{
+"n": "S2-Q7",
+"q": "Functionalism strongly influenced the emergence of educational psychology and:",
+"opts": [
+"Pragmatism",
+"Phrenology",
+"Dualism",
+"Structuralism"
+],
+"ans": 0
+},
+{
+"n": "S2-Q8",
+"q": "The founder of the psychoanalytic approach was:",
+"opts": [
+"Albert Bandura",
+"Ulric Neisser",
+"Sigmund Freud",
+"Lev Vygotsky"
+],
+"ans": 2
+},
+{
+"n": "S2-Q9",
+"q": "Psychoanalysis emphasizes the powerful influence of the:",
+"opts": [
+"Conscious ego only",
+"Observable behavior",
+"Unconscious mind",
+"Genetic structure"
+],
+"ans": 2
+},
+{
+"n": "S2-Q10",
+"q": "Which triad of personality structures was introduced by Sigmund Freud?",
+"opts": [
+"Stimulus, response, reflex",
+"Sensorimotor, preoperational, formal",
+"Id, ego, superego",
+"Self, organism, schema"
+],
+"ans": 2
+},
+{
+"n": "S2-Q11",
+"q": "What investigation method is central to Psychoanalysis?",
+"opts": [
+"Free association",
+"Laboratory conditioning",
+"Computer modeling",
+"Brain scans"
+],
+"ans": 0
+},
+{
+"n": "S2-Q12",
+"q": "Behaviorism rejected the study of internal consciousness in favor of:",
+"opts": [
+"Unconscious drives",
+"Observable behavior",
+"Spiritual traits",
+"Innate goodness"
+],
+"ans": 1
+},
+{
+"n": "S2-Q13",
+"q": "Which psychologist is considered a pioneer of classical conditioning within Behaviorism?",
+"opts": [
+"Abraham Maslow",
+"Ivan Pavlov",
+"Jean Piaget",
+"David Buss"
+],
+"ans": 1
+},
+{
+"n": "S2-Q14",
+"q": "Behaviorism asserts that human actions are primarily shaped by:",
+"opts": [
+"Free will",
+"Conditioning",
+"Archetypes",
+"Hormonal balance"
+],
+"ans": 1
+},
+{
+"n": "S2-Q15",
+"q": "A major limitation of Behaviorism is that it neglected:",
+"opts": [
+"Animal subjects",
+"Observable stimuli",
+"Thoughts and free will",
+"Environmental factors"
+],
+"ans": 2
+},
+{
+"n": "S2-Q16",
+"q": "'The whole is greater than the sum of its parts' is the core principle of:",
+"opts": [
+"Gestalt psychology",
+"Humanistic psychology",
+"Evolutionary psychology",
+"Structuralism"
+],
+"ans": 0
+},
+{
+"n": "S2-Q17",
+"q": "Who is recognized as a primary founder of Gestalt psychology?",
+"opts": [
+"Max Wertheimer",
+"John Dewey",
+"Edward Titchener",
+"John B. Watson"
+],
+"ans": 0
+},
+{
+"n": "S2-Q18",
+"q": "Gestalt psychology has its most direct modern applications in:",
+"opts": [
+"Psychopharmacology",
+"Perception and problem-solving",
+"Genetic engineering",
+"Dream decoding"
+],
+"ans": 1
+},
+{
+"n": "S2-Q19",
+"q": "Humanistic psychology focuses predominantly on human potential and:",
+"opts": [
+"Self-actualization",
+"Biological determinism",
+"Classical conditioning",
+"Unconscious conflicts"
+],
+"ans": 0
+},
+{
+"n": "S2-Q20",
+"q": "Which two theorists are the leading figures of Humanistic psychology?",
+"opts": [
+"James & Dewey",
+"Rogers & Maslow",
+"Wundt & Titchener",
+"Sperry & Olds"
+],
+"ans": 1
+},
+{
+"n": "S2-Q21",
+"q": "What primary therapeutic method emerged from Humanistic psychology?",
+"opts": [
+"Electroconvulsive therapy",
+"Client-centered therapy",
+"Systematic desensitization",
+"Psychoanalytic hypnosis"
+],
+"ans": 1
+},
+{
+"n": "S2-Q22",
+"q": "Cognitive psychology compares the human mind to an:",
+"opts": [
+"Information-processing system",
+"Unconscious reservoir",
+"Empty biological vessel",
+"Electrical generator"
+],
+"ans": 0
+},
+{
+"n": "S2-Q23",
+"q": "Which theorist is widely associated with Cognitive psychology?",
+"opts": [
+"B. F. Skinner",
+"Jean Piaget",
+"Carl Rogers",
+"Ivan Pavlov"
+],
+"ans": 1
+},
+{
+"n": "S2-Q24",
+"q": "Cognitive-Behavioral Therapy (CBT) and Artificial Intelligence (AI) are applied areas of:",
+"opts": [
+"Cognitive psychology",
+"Structuralism",
+"Functionalism",
+"Psychoanalysis"
+],
+"ans": 0
+},
+{
+"n": "S2-Q25",
+"q": "The Biological approach explains behavior in terms of genetics, hormones, and:",
+"opts": [
+"Social hierarchies",
+"Neurotransmitters",
+"Repressed urges",
+"Introspective thoughts"
+],
+"ans": 1
+},
+{
+"n": "S2-Q26",
+"q": "Key figures associated with the modern Biological / Neuroscience perspective include:",
+"opts": [
+"Watson & Skinner",
+"Roger Sperry & James Olds",
+"Wertheimer & Koffka",
+"Vygotsky & Dewey"
+],
+"ans": 1
+},
+{
+"n": "S2-Q27",
+"q": "Evolutionary psychology proposes that mental traits and behaviors survive via:",
+"opts": [
+"Free association",
+"Natural selection",
+"Operant reinforcement",
+"Self-actualization"
+],
+"ans": 1
+},
+{
+"n": "S2-Q28",
+"q": "Which researcher is a prominent modern figure in Evolutionary psychology?",
+"opts": [
+"David Buss",
+"Ulric Neisser",
+"Edward Titchener",
+"Abraham Maslow"
+],
+"ans": 0
+},
+{
+"n": "S2-Q29",
+"q": "The Socio-Cultural approach emphasizes the decisive role of:",
+"opts": [
+"Society and culture",
+"Id-superego conflict",
+"Mechanical reflexes",
+"Cranial morphology"
+],
+"ans": 0
+},
+{
+"n": "S2-Q30",
+"q": "Which psychologist is recognized as a foundational figure in Socio-Cultural psychology?",
+"opts": [
+"Lev Vygotsky",
+"Wolfgang Köhler",
+"John B. Watson",
+"Sigmund Freud"
+],
+"ans": 0
+}
+];
+const TOTAL = QUESTIONS.length;
+const KEY = "psy_mid_phase1_v1";
+const $ = id => document.getElementById(id);
+const show = id => { $("adm").classList.toggle("hide", id==="s-quiz");
+  for (const s of ["s-start","s-quiz","s-end"]) $(s).classList.toggle("hide", s!==id); };
+
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)); } catch(e){ return null; } };
+const save = o => { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch(e){} };
+const mmss = ms => { const s=Math.round(ms/1000); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); };
+
+// unbiased Fisher-Yates shuffle (question order only; options stay as written)
+function shuffle(a){
+  a = a.slice();
+  for (let i=a.length-1;i>0;i--){
+    const r = new Uint32Array(1); let j;
+    do { crypto.getRandomValues(r); } while (r[0] >= 4294967296 - (4294967296 % (i+1)));
+    j = r[0] % (i+1);
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+let order, idx = 0, picked = null, correct = 0, answered = 0, log = [];
+let player = {name:"",roll:""}, t0 = 0, live = false, usedFS = false, timer = null;
+
+function renderEnd(rec){
+  show("s-end");
+  const done = rec.status === "finished";
+  $("et").textContent = done ? "Quiz finished" : "Quiz terminated";
+  $("et").className = done ? "good" : "bad";
+  $("em").textContent = done ? "Your answers have been submitted." :
+    "You left the quiz screen, so the quiz ended. Reason: " + rec.reason + ".";
+  $("sc").textContent = rec.score + " / " + TOTAL;
+  const wrong = (rec.log||[]).filter(x => QUESTIONS[x.i].ans !== x.p);
+  const rev = wrong.map(x=>{
+    const q = QUESTIONS[x.i], L = "ABCD";
+    return q.n + ". " + q.q + "\n   Your answer: " + L[x.p] + ") " + q.opts[x.p] +
+           "\n   Correct answer: " + L[q.ans] + ") " + q.opts[q.ans];
+  });
+  $("rp").textContent = [
+    "Name: " + rec.name,
+    "Roll no: " + rec.roll,
+    "Correct: " + rec.score,
+    "Wrong: " + (TOTAL - rec.score)
+  ].join("\n");
+  $("rv").textContent = rev.length ? "Your wrong answers (" + rev.length + "):\n\n" + rev.join("\n\n")
+                                   : "No wrong answers. Perfect!";
+}
+
+function endQuiz(status, reason){
+  if (!live) return;
+  live = false;
+  clearInterval(timer);
+  window.removeEventListener("beforeunload", onUnload);
+  if (document.fullscreenElement && document.exitFullscreen) { try { document.exitFullscreen(); } catch(e){} }
+  const rec = {status, reason: reason||"", name:player.name, roll:player.roll,
+               score:correct, answered, log, ms: Date.now()-t0};
+  save(rec);
+  renderEnd(rec);
+}
+const terminate = why => endQuiz("terminated", why);
+
+function onUnload(e){ e.preventDefault(); e.returnValue = ""; }
+
+function showQ(){
+  const q = QUESTIONS[order[idx]];
+  picked = null;
+  $("qn").textContent = "Question " + (idx+1) + " of " + TOTAL;
+  $("pb").style.width = (idx/TOTAL*100) + "%";
+  $("qt").textContent = q.q;
+  const box = $("opts"); box.textContent = "";
+  q.opts.forEach((t,i)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    const l = document.createElement("b"); l.textContent = "ABCD"[i] + ")";
+    const s = document.createElement("span"); s.textContent = t;
+    b.append(l,s);
+    b.onclick = () => {
+      picked = i;
+      [...box.children].forEach((c,k)=>c.classList.toggle("sel",k===i));
+      $("next").disabled = false;
+    };
+    box.appendChild(b);
+  });
+  $("next").disabled = true;
+  $("next").textContent = idx === TOTAL-1 ? "Finish" : "Next";
+}
+
+$("next").onclick = () => {
+  if (!live || picked === null) return;
+  answered++;
+  log.push({i: order[idx], p: picked});
+  if (picked === QUESTIONS[order[idx]].ans) correct++;
+  idx++;
+  if (idx >= TOTAL){ $("pb").style.width = "100%"; endQuiz("finished",""); }
+  else showQ();
+};
+
+async function start(){
+  const name = $("nm").value.trim(), roll = $("rl").value.trim();
+  if (!name || !roll){ $("err").textContent = "Please enter your name and roll no."; return; }
+  $("err").textContent = "";
+  player = {name, roll};
+  // mark attempt as used BEFORE anything else: a refresh from here on counts as leaving
+  save({status:"terminated", reason:"page was reloaded or closed", name, roll, score:0, answered:0, ms:0});
+  try { await document.documentElement.requestFullscreen(); } catch(e){}
+  usedFS = !!document.fullscreenElement;
+  order = shuffle([...QUESTIONS.keys()]);
+  idx = 0; correct = 0; answered = 0; log = []; t0 = Date.now();
+  live = true; graceUntil = Date.now() + 1500;
+  show("s-quiz"); showQ();
+  timer = setInterval(()=>{ $("clock").textContent = mmss(Date.now()-t0); }, 500);
+  window.addEventListener("beforeunload", onUnload);
+  history.pushState({q:1}, "");
+}
+let graceUntil = 0;
+$("go").onclick = start;
+
+// ---- leave detection ----
+document.addEventListener("visibilitychange", ()=>{ if (live && document.hidden) terminate("switched tab or app"); });
+window.addEventListener("blur", ()=>{ if (live && Date.now() > graceUntil) terminate("window lost focus"); });
+document.addEventListener("fullscreenchange", ()=>{ if (live && usedFS && !document.fullscreenElement) terminate("exited full screen"); });
+window.addEventListener("popstate", ()=>{ if (live) terminate("pressed back"); });
+window.addEventListener("pagehide", ()=>{ /* attempt already stored as terminated; finished/terminated records overwrite it */ });
+
+// ---- light deterrents ----
+["contextmenu","copy","cut","paste","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{ if (live) e.preventDefault(); }));
+document.addEventListener("keydown", e=>{
+  if (!live) return;
+  const k = e.key.toLowerCase();
+  if (e.key === "F12" || e.key === "F5" || e.key === "Escape" ||
+      ((e.ctrlKey||e.metaKey) && ["u","s","p","c","a","r","f","i","j"].includes(k)) ||
+      (e.ctrlKey && e.shiftKey && ["i","j","c"].includes(k))) e.preventDefault();
+});
+
+// ---- copy report ----
+$("cp").onclick = async () => {
+  const txt = $("rp").textContent;
+  try { await navigator.clipboard.writeText(txt); }
+  catch(e){ const r=document.createRange(); r.selectNodeContents($("rp")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand("copy"); }
+  $("cp").textContent = "Copied ✓";
+  setTimeout(()=>$("cp").textContent="Copy report",1500);
+};
+
+// ---- admin reset (code is stored only as a SHA-256 hash) ----
+const ADMIN_HASH = "8f1104102cf38535215740be8015e5230acb12fda411c5674db208d259350eed";
+const sha256 = async s => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)))]
+  .map(b=>b.toString(16).padStart(2,"0")).join("");
+$("admt").onclick = () => $("admb").classList.toggle("hide");
+$("admg").onclick = async () => {
+  if (live) return;
+  try {
+    if (await sha256($("admc").value.trim().toUpperCase()) === ADMIN_HASH){
+      try { localStorage.removeItem(KEY); } catch(e){}
+      location.reload();
+    } else $("adme").textContent = "Wrong code.";
+  } catch(e){ $("adme").textContent = "Admin reset needs https or localhost."; }
+};
+
+// ---- boot: one attempt only ----
+const prev = load();
+if (prev && (prev.status==="finished" || prev.status==="terminated")) renderEnd(prev);
+else show("s-start");
+</script>
+</body>
+</html>
